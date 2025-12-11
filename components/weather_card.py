@@ -2,12 +2,15 @@ import flet as ft
 from utils.helpers import get_weather_icon, format_temperature, capitalize_first
 
 
-class WeatherCard(ft.UserControl):
+# 1. Cambio principal: Heredar de ft.Card en lugar de ft.UserControl
+class WeatherCard(ft.Card):
     def __init__(self):
         super().__init__()
 
-    def build(self):
-        # Crear los controles como atributos de la clase
+        # 2. Configurar propiedades de la tarjeta (lo que antes estaba en return ft.Card(...))
+        self.elevation = 5
+
+        # 3. Definir los controles (Esto se mueve de build() a __init__())
         self.city_title = ft.Text(
             "Selecciona una ciudad",
             size=24,
@@ -23,44 +26,44 @@ class WeatherCard(ft.UserControl):
         self.humidity = ft.Text("--%", size=16, weight=ft.FontWeight.BOLD)
         self.wind_speed = ft.Text("-- km/h", size=16, weight=ft.FontWeight.BOLD)
 
-        return ft.Card(
-            content=ft.Container(
-                content=ft.Column([
-                    # Título de la ciudad
-                    self.city_title,
-                    ft.Divider(),
-                    # Información principal del clima
-                    ft.Row([
-                        ft.Column([
-                            self.weather_icon,
-                        ], horizontal_alignment=ft.CrossAxisAlignment.CENTER),
-                        ft.Column([
-                            self.temperature,
-                            self.description,
-                        ], horizontal_alignment=ft.CrossAxisAlignment.START),
-                    ], alignment=ft.MainAxisAlignment.SPACE_AROUND),
-                    ft.Divider(),
-                    # Detalles adicionales
-                    ft.Row([
-                        ft.Column([
-                            ft.Text("Sensación", size=12, color=ft.colors.GREY_600),
-                            self.feels_like,
-                        ], horizontal_alignment=ft.CrossAxisAlignment.CENTER),
-                        ft.Column([
-                            ft.Text("Humedad", size=12, color=ft.colors.GREY_600),
-                            self.humidity,
-                        ], horizontal_alignment=ft.CrossAxisAlignment.CENTER),
-                        ft.Column([
-                            ft.Text("Viento", size=12, color=ft.colors.GREY_600),
-                            self.wind_speed,
-                        ], horizontal_alignment=ft.CrossAxisAlignment.CENTER),
-                    ], alignment=ft.MainAxisAlignment.SPACE_AROUND),
-                ]),
-                padding=20,
-                border_radius=10,
-            ),
-            elevation=5,
+        # 4. Asignar el contenido a self.content en lugar de retornarlo
+        self.content = ft.Container(
+            content=ft.Column([
+                # Título de la ciudad
+                self.city_title,
+                ft.Divider(),
+                # Información principal del clima
+                ft.Row([
+                    ft.Column([
+                        self.weather_icon,
+                    ], horizontal_alignment=ft.CrossAxisAlignment.CENTER),
+                    ft.Column([
+                        self.temperature,
+                        self.description,
+                    ], horizontal_alignment=ft.CrossAxisAlignment.START),
+                ], alignment=ft.MainAxisAlignment.SPACE_AROUND),
+                ft.Divider(),
+                # Detalles adicionales
+                ft.Row([
+                    ft.Column([
+                        ft.Text("Sensación", size=12, color=ft.Colors.GREY_600),
+                        self.feels_like,
+                    ], horizontal_alignment=ft.CrossAxisAlignment.CENTER),
+                    ft.Column([
+                        ft.Text("Humedad", size=12, color=ft.Colors.GREY_600),
+                        self.humidity,
+                    ], horizontal_alignment=ft.CrossAxisAlignment.CENTER),
+                    ft.Column([
+                        ft.Text("Viento", size=12, color=ft.Colors.GREY_600),
+                        self.wind_speed,
+                    ], horizontal_alignment=ft.CrossAxisAlignment.CENTER),
+                ], alignment=ft.MainAxisAlignment.SPACE_AROUND),
+            ]),
+            padding=20,
+            border_radius=10,
         )
+
+    # El método build() YA NO ES NECESARIO y se elimina.
 
     def update_weather(self, weather_data):
         """Actualiza la tarjeta con datos del clima"""

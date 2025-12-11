@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # API Key gratuita de OpenWeatherMap (Current Weather Data API - GRATIS)
-WEATHER_API_KEY = os.getenv("WEATHER_API_KEY", "8eb6b3b49087cfc8b1cee81b6b85256f")
+WEATHER_API_KEY = os.getenv("WEATHER_API_KEY", "716882002bd5b01432d57d43c2a7e72c")
 
 # URLs para API gratuita (Current Weather Data 2.5 - NO requiere suscripción)
 BASE_URL = "https://api.openweathermap.org/data/2.5"
