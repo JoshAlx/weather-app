@@ -1,0 +1,41 @@
+name: Build Weather App APK
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.12'
+
+    - name: Install Dependencies
+      run: |
+        pip install -r requirements.txt
+        # Forzamos la instalación de flet por si no estaba en el txt
+        pip install flet
+
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        channel: 'stable'
+
+    - name: Build APK
+      run: |
+        # El comando estándar de Flet
+        flet build apk --verbose
+
+    - name: Upload APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: weather-app-apk
+        path: build/app/outputs/flutter-apk/app-release.apk
